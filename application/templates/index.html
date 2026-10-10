@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kubernetes Scaling Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 650px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f4f7fb;
+            color: #182230;
+        }
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px #00000012;
+        }
+        input, button {
+            font-size: 16px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        input { width: 100px; }
+        button {
+            background: #1769aa;
+            color: white;
+            border: 0;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .message { padding: 10px; background: #e8f2ff; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Kubernetes Scaling Platform</h1>
+        <p>Manage the replicas of your application running on Amazon EKS.</p>
+
+        <h3>Current status</h3>
+        <p>Desired replicas: <strong>{{ desired }}</strong></p>
+        <p>Ready replicas: <strong>{{ ready }}</strong></p>
+
+        {% with messages = get_flashed_messages() %}
+          {% for message in messages %}
+            <p class="message">{{ message }}</p>
+          {% endfor %}
+        {% endwith %}
+
+        <form action="/scale" method="post">
+            <label for="replicas">Desired replicas ({{ minimum }}–{{ maximum }}):</label><br>
+            <input id="replicas" name="replicas" type="number"
+                   min="{{ minimum }}" max="{{ maximum }}"
+                   value="{{ desired }}" required>
+            <button type="submit">Scale application</button>
+        </form>
+
+        <p><small>Replica changes may take time as Kubernetes schedules pods.</small></p>
+    </div>
+</body>
+</html>
